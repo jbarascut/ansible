@@ -1,0 +1,20 @@
+# playbook.yml
+---
+- hosts: all
+  remote_user: admin
+  sudo: yes
+  tasks: 
+    - name: 0. updates a server
+      apt: update_cache=yes 
+
+    - name: 1. install Apache
+      apt: name=apache2 state=present
+
+    - name: 2. install PHP module for Apache
+      apt: name=libapache2-mod-php5 state=present
+
+    - name: 3. start Apache
+      apt: name=apache2 state=present
+
+    - name: 4. install Hello World PHP script
+      copy: src=file/index.php dest=/var/www/index.php mode=0664
