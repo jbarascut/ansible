@@ -1,0 +1,27 @@
+---
+
+- hosts: all
+  remote_user: admin
+  sudo: yes
+
+  tasks:
+    - name: Install python packages
+      apt: name={{ item }} update_cache=yes
+      with_items:
+        - python-dev
+        - python-pip
+          
+    - name: Install thefuck dependances
+      pip: name={{ item }}
+           state=latest
+      with_items:
+        - python-utils
+        - pathlib
+        - six
+          
+
+    - name: Install TheFuck python package
+      pip: name=thefuck
+
+    - name: Set global config to use thefuck
+      lineinfile: dest=/etc/bash.bashrc line='eval "$(thefuck-alias)"'
