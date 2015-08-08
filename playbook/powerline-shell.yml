@@ -1,0 +1,29 @@
+---
+- hosts: all
+  remote_user: admin
+
+
+  tasks:
+    - name: Install git
+      apt: name=git update_cache=yes state=latest
+      sudo: yes
+
+    - name: Git clone powerline-shell
+      git: repo=https://github.com/milkbikis/powerline-shell dest=/tmp/powerline-shell
+
+    - name: Execute install
+      shell: ./install.py
+      args:
+        chdir: /tmp/powerline-shell
+
+    - name: Copy script
+      shell: "cp /tmp/powerline-shell/powerline-shell.py /opt/powerline-shell.py"
+      sudo: yes
+
+    - name: Change mode file
+      file: path=/opt/powerline-shell.py mode=0755
+      sudo: yes
+
+    - name: Set global config to use powerline
+      lineinfile: dest=/etc/bash.bashrc line='function _update_ps1() {\n  export PS1="$(/opt/powerline-shell.py $? 2> /dev/null)"\n}\n\nexport PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"' 
+      sudo: yes
