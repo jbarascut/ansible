@@ -1,6 +1,6 @@
 - hosts: all
-  sudo: true
-  user: admin
+  become: yes
+  user: root
   tasks:
     - name: updates a server
       apt: update_cache=yes
