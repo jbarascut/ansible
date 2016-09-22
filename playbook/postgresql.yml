@@ -1,20 +1,23 @@
 ---
-- hosts: all
-  remote_user: admin
-  sudo: yes
+- hosts: odoo
+  remote_user: gnupyx
+  become: yes
   tasks:
     - name: Update a server
       apt: update_cache=yes
-    
-    - name: Add repository signing key 
+
+    - name: Add default packages
+      apt: name=ca-certificates state=present
+
+    - name: Add repository signing key
       apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
 
     - name: Add Postgresql repository
-      apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' state=present update_cache=yes 
+      apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' state=present update_cache=yes
 
     - name: Install Postgresql 9.5
       apt: name=postgresql-9.5 state=present
-    
+
     - name: Install Psycopg2
       apt: name=python-psycopg2 state=present
 
