@@ -46,3 +46,7 @@
       service:
         name: "postgresql"
         state: started
+
+    handlers:
+      - name: restart postgresql
+        service: name=postgresql state=restarted
