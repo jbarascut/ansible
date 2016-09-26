@@ -1,5 +1,5 @@
 ---
-- hosts: odoo
+- hosts: postgres
   remote_user: gnupyx
   become: yes
   tasks:
@@ -47,6 +47,6 @@
         name: "postgresql"
         state: started
 
-    handlers:
-      - name: restart postgresql
-        service: name=postgresql state=restarted
+  handlers:
+    - name: restart postgresql
+      service: name=postgresql state=restarted
